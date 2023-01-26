@@ -35,11 +35,17 @@ public class ProductoController {
 
     @PostMapping
     public ResponseEntity<Productos> create(@RequestBody Productos user) {
-        if (user.getCantidad() <= 0 || user.getPrecio()<= 0) {
-            System.out.println("no se acepta valores menores a cero");
+
+        if (user.getDescripcion().isEmpty()) {
+            System.out.println("El campo descripcion esta vacio");
             return ResponseEntity.notFound().build();
         } else {
-            return ResponseEntity.status(HttpStatus.CREATED).body(productoS.save(user));
+            if (user.getCantidad() <= 0 || user.getPrecio() <= 0) {
+                System.out.println("no se acepta valores menores a cero");
+                return ResponseEntity.notFound().build();
+            } else {
+                return ResponseEntity.status(HttpStatus.CREATED).body(productoS.save(user));
+            }
         }
 
     }

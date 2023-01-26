@@ -25,14 +25,25 @@ public class Productos implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long codigo;
-    
+
     @Column(length = 100, nullable = false)
     private String descripcion;
-     @Column(nullable = false)
+    @Column(nullable = false)
     private double precio;
-      @Column(nullable = false)
+    @Column(nullable = false)
     private int cantidad;
 
+    @Column(nullable = false)
+    private double valor_compra;
+
+    public double getValor_compra() {
+        return cantidad*precio;
+    }
+
+    public void setValor_compra(double valor_compra) {
+        this.valor_compra = valor_compra;
+    }
+    
     public Long getCodigo() {
         return codigo;
     }
@@ -64,7 +75,5 @@ public class Productos implements Serializable {
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }
-    
-    
 
 }
