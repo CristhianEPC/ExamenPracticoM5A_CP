@@ -1,3 +1,7 @@
-link:
+link docx:
 
 https://docs.google.com/document/d/1dkCHuyqVmrZP8rABJb8XRRpLqr3obEhP1WWcjPCTEnQ/edit?usp=sharing
+
+link pdf: 
+
+https://drive.google.com/file/d/1QuHuiLamwvJRuRGky66Rof95RxYkZnGT/view?usp=sharing
