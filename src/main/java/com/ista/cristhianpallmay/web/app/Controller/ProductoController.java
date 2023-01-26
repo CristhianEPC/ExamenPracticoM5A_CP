@@ -26,56 +26,62 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @author educr
  */
-
 @RestController
 @RequestMapping("/api")
 public class ProductoController {
+
     @Autowired
     private ProductoService productoS;
-    
+
     @PostMapping
-    public ResponseEntity<Productos> create(@RequestBody Productos user){
-        return ResponseEntity.status(HttpStatus.CREATED).body(productoS.save(user));
+    public ResponseEntity<Productos> create(@RequestBody Productos user) {
+        if (user.getCantidad() <= 0 || user.getPrecio()<= 0) {
+            System.out.println("no se acepta valores menores a cero");
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.status(HttpStatus.CREATED).body(productoS.save(user));
+        }
+
     }
-    
+
     @GetMapping("/{id}")
-    public ResponseEntity<?> read(@PathVariable(value = "id") Long user_Id){
+    public ResponseEntity<?> read(@PathVariable(value = "id") Long user_Id) {
         Optional<Productos> oProd = productoS.findById(user_Id);
-        
+
         if (!oProd.isPresent()) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(oProd);
     }
-    
-     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@RequestBody Productos ProdDetails,@PathVariable("id") Long idPro){
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@RequestBody Productos ProdDetails, @PathVariable("id") Long idPro) {
         Optional<Productos> produc = productoS.findById(idPro);
-        
+
         if (!produc.isPresent()) {
             return ResponseEntity.notFound().build();
         }
-        
+
         //BeanUtils.copyProperties(userDetails, user.get());
         produc.get().setDescripcion(ProdDetails.getDescripcion());
         produc.get().setCantidad(ProdDetails.getCantidad());
         produc.get().setPrecio(ProdDetails.getPrecio());
-        
+
         return ResponseEntity.status(HttpStatus.CREATED).body(productoS.save(produc.get()));
     }
-    
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable(value = "id") Long id_e){
+    public ResponseEntity<?> delete(@PathVariable(value = "id") Long id_e) {
         if (!productoS.findById(id_e).isPresent()) {
             return ResponseEntity.notFound().build();
         }
-        
+
         productoS.deleteById(id_e);
         return ResponseEntity.ok().build();
     }
-    
-     @GetMapping
-    public List<Productos> readAll(){
+
+    @GetMapping
+    public List<Productos> readAll() {
         List<Productos> product = StreamSupport
                 .stream(productoS.findAll().spliterator(), false)
                 .collect(Collectors.toList());
